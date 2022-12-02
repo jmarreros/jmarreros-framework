@@ -1,0 +1,18 @@
+{
+    "name": "jmarreros/jmarreros-framework",
+    "description": "Simple PHP framework",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Jmarreros\\": "src/Jmarreros"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jhon Marreros Guzmán",
+            "email": "j_marreros@hotmail.com"
+        }
+    ],
+    "require": {}
+}

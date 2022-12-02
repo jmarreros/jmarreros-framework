@@ -1,4 +1,7 @@
 <?php
+
+namespace Jmarreros;
+
 enum HttpMethods: string{
 	case GET = "GET";
 	case POST = "POST";

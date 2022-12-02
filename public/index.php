@@ -1,5 +1,8 @@
 <?php
-require "Router.php";
+require_once "../vendor/autoload.php";
+
+use Jmarreros\HttpNotFoundException;
+use Jmarreros\Router;
 
 $router = new Router();
 
@@ -9,6 +12,18 @@ $router->get('/test', function(){
 
 $router->post('/test', function(){
 	return "Get Post OK 🤚";
+});
+
+$router->put('/test', function(){
+	return "PUT OK 🤚";
+});
+
+$router->patch('/test', function(){
+	return "PATCH OK 🤚";
+});
+
+$router->delete('/test', function(){
+	return "DELETE OK 🤚";
 });
 
 try {
