@@ -3,9 +3,17 @@
     "description": "Simple PHP framework",
     "type": "library",
     "license": "MIT",
+    "scripts": {
+        "test": "phpunit --color=always --testdox -v test/"
+    },
     "autoload": {
         "psr-4": {
             "Jmarreros\\": "src/Jmarreros"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jmarreros\\Test\\": "test"
         }
     },
     "authors": [
@@ -14,5 +22,7 @@
             "email": "j_marreros@hotmail.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
 }
