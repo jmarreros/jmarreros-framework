@@ -3,6 +3,7 @@ require_once "../vendor/autoload.php";
 
 use Jmarreros\HttpNotFoundException;
 use Jmarreros\Router;
+use Jmarreros\Route;
 
 $router = new Router();
 
@@ -29,9 +30,11 @@ $router->delete( '/test', function () {
 try {
 	$method = $_SERVER["REQUEST_METHOD"];
 	$uri    = $_SERVER["REQUEST_URI"];
-
-	$action = $router->resolve( $uri, $method );
+	$route = $router->resolve( $uri, $method );
+	$action = $route->action();
 	print( $action() );
+//	$route = new Route( '/test/{test}/user/{user}', fn() => "test" );
+//	var_dump($route->parseParameters('/test/1/user/3'));
 } catch ( HttpNotFoundException $e ) {
 	print( "Not Found 🤔" );
 	http_response_code( 404 );

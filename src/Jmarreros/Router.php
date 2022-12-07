@@ -1,6 +1,8 @@
 <?php
 namespace Jmarreros;
 
+use Closure;
+
 class Router{
 	protected array $routes = [];
 
@@ -14,29 +16,35 @@ class Router{
 	 * @throws HttpNotFoundException
 	 */
 	public function resolve(string $uri, string $method){
-		$action = $this->routes[$method][$uri] ?? null;
-		if ( is_null($action) ) throw new HttpNotFoundException();
-
-		return $action;
+		foreach ($this->routes[$method] as $route){
+			if ($route->matches($uri)){
+				return $route;
+			}
+		}
+		throw new HttpNotFoundException();
 	}
 
-	public function get(string $uri, callable $action){
-		$this->routes[HttpMethods::GET->value][$uri] = $action;
+	protected function registerRoute(HttpMethods $method, string $uri, Closure $action){
+		$this->routes[$method->value][] = new Route($uri, $action);
+	}
+
+	public function get(string $uri, Closure $action){
+		$this->registerRoute(HttpMethods::GET, $uri, $action);
 	}
 
 	public function post(string $uri, callable $action){
-		$this->routes[HttpMethods::POST->value][$uri] = $action;
+		$this->registerRoute(HttpMethods::POST, $uri, $action);
 	}
 
 	public function put(string $uri, callable $action){
-		$this->routes[HttpMethods::PUT->value][$uri] = $action;
+		$this->registerRoute(HttpMethods::PUT, $uri, $action);
 	}
 
 	public function patch(string $uri, callable $action){
-		$this->routes[HttpMethods::PATCH->value][$uri] = $action;
+		$this->registerRoute(HttpMethods::PATCH, $uri, $action);
 	}
 
 	public function delete(string $uri, callable $action){
-		$this->routes[HttpMethods::DELETE->value][$uri] = $action;
+		$this->registerRoute(HttpMethods::DELETE, $uri, $action);
 	}
 }
