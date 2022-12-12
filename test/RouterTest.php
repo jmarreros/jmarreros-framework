@@ -3,6 +3,7 @@
 namespace Jmarreros\Test;
 
 use Jmarreros\HttpMethods;
+use Jmarreros\Request;
 use Jmarreros\Router;
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +15,7 @@ class RouterTest extends TestCase {
 		$router = new Router();
 		$router->get( $uri, $action );
 
-		$route = $router->resolve( $uri, HttpMethods::GET->value );
+		$route = $router->resolve( new Request(new MockServer($uri, HttpMethods::GET)) );
 		$this->assertEquals( $action, $route->action() );
 		$this->assertEquals( $uri, $route->uri() );
 	}
@@ -34,7 +35,7 @@ class RouterTest extends TestCase {
 		}
 
 		foreach ( $routes as $uri => $action ) {
-			$route = $router->resolve( $uri, HttpMethods::GET->value );
+			$route = $router->resolve( new Request(new MockServer($uri, HttpMethods::GET))  );
 			$this->assertEquals( $action, $route->action() );
 		}
 	}
@@ -61,7 +62,7 @@ class RouterTest extends TestCase {
 		}
 
 		foreach ( $routes as [$method, $uri, $action] ) {
-			$route = $router->resolve( $uri, $method->value );
+			$route = $router->resolve( new Request(new MockServer($uri, $method))  );
 			$this->assertEquals( $action, $route->action() );
 			$this->assertEquals( $uri, $route->uri() );
 		}
