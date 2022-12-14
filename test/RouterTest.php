@@ -5,9 +5,19 @@ namespace Jmarreros\Test;
 use Jmarreros\HttpMethods;
 use Jmarreros\Request;
 use Jmarreros\Router;
+use Jmarreros\Server;
 use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase {
+
+	private function createMockRequest(string $uri, HttpMethods $method): Request{
+		$mock = $this->getMockBuilder(Server::class)->getMock();
+		$mock->method('requestUri')->willReturn($uri);
+		$mock->method('requestMethod')->willReturn($method);
+
+		return new Request($mock);
+	}
+
 	public function test_resolve_basic_route_with_callback_action() {
 		$uri    = '/test';
 		$action = fn() => "test";
@@ -15,7 +25,8 @@ class RouterTest extends TestCase {
 		$router = new Router();
 		$router->get( $uri, $action );
 
-		$route = $router->resolve( new Request(new MockServer($uri, HttpMethods::GET)) );
+//		$route = $router->resolve( new Request(new MockServer($uri, HttpMethods::GET)) );
+		$route = $router->resolve( $this->createMockRequest($uri, HttpMethods::GET) );
 		$this->assertEquals( $action, $route->action() );
 		$this->assertEquals( $uri, $route->uri() );
 	}
@@ -35,7 +46,7 @@ class RouterTest extends TestCase {
 		}
 
 		foreach ( $routes as $uri => $action ) {
-			$route = $router->resolve( new Request(new MockServer($uri, HttpMethods::GET))  );
+			$route = $router->resolve( $this->createMockRequest($uri, HttpMethods::GET)  );
 			$this->assertEquals( $action, $route->action() );
 		}
 	}
@@ -62,7 +73,7 @@ class RouterTest extends TestCase {
 		}
 
 		foreach ( $routes as [$method, $uri, $action] ) {
-			$route = $router->resolve( new Request(new MockServer($uri, $method))  );
+			$route = $router->resolve( $this->createMockRequest($uri, $method)  );
 			$this->assertEquals( $action, $route->action() );
 			$this->assertEquals( $uri, $route->uri() );
 		}
