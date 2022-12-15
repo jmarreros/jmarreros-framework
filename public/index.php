@@ -1,10 +1,10 @@
 <?php
 require_once "../vendor/autoload.php";
 
-use Jmarreros\HttpNotFoundException;
-use Jmarreros\Request;
-use Jmarreros\Router;
-use Jmarreros\PHPNativeServer;
+use Jmarreros\Http\HttpNotFoundException;
+use Jmarreros\Http\Request;
+use Jmarreros\Routing\Router;
+use Jmarreros\Server\PHPNativeServer;
 
 $router = new Router();
 

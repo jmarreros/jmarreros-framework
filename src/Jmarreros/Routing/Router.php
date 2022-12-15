@@ -2,6 +2,9 @@
 namespace Jmarreros;
 
 use Closure;
+use Jmarreros\Http\HttpMethods;
+use Jmarreros\Http\HttpNotFoundException;
+use Jmarreros\Http\Request;
 
 class Router{
 	protected array $routes = [];

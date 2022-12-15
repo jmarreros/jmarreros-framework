@@ -2,7 +2,7 @@
 
 namespace Jmarreros\Test;
 
-use Jmarreros\Route;
+use Jmarreros\Routing\Route;
 use PHPUnit\Framework\TestCase;
 
 class RouteTest extends TestCase {

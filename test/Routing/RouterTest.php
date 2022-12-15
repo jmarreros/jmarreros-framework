@@ -2,10 +2,10 @@
 
 namespace Jmarreros\Test;
 
-use Jmarreros\HttpMethods;
-use Jmarreros\Request;
-use Jmarreros\Router;
-use Jmarreros\Server;
+use Jmarreros\Http\HttpMethods;
+use Jmarreros\Http\Request;
+use Jmarreros\Routing\Router;
+use Jmarreros\Server\Server;
 use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase {
