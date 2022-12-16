@@ -1,12 +1,12 @@
 <?php
 
-namespace Jmarreros\Test;
+namespace Jmarreros\Test\Routing;
 
 use Jmarreros\Http\HttpMethods;
 use Jmarreros\Http\Request;
+use PHPUnit\Framework\TestCase;
 use Jmarreros\Routing\Router;
 use Jmarreros\Server\Server;
-use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase {
 

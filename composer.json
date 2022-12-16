@@ -8,7 +8,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Jmarreros\\": "src/Jmarreros"
+            "Jmarreros\\": "src/"
         }
     },
     "autoload-dev": {

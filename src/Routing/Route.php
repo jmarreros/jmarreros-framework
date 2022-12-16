@@ -1,6 +1,6 @@
 <?php
 
-namespace Jmarreros;
+namespace Jmarreros\Routing;
 
 class Route {
 	protected string $uri;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Jmarreros;
+namespace Jmarreros\Http;
 
 enum HttpMethods: string{
 	case GET = "GET";

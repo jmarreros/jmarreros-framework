@@ -1,6 +1,8 @@
 <?php
 
-namespace Jmarreros;
+namespace Jmarreros\Http;
+
+use Jmarreros\Server\Server;
 
 class Request {
 	protected string $uri;

@@ -1,5 +1,5 @@
 <?php
-namespace Jmarreros;
+namespace Jmarreros\Routing;
 
 use Closure;
 use Jmarreros\Http\HttpMethods;
