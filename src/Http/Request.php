@@ -1,27 +1,68 @@
 <?php
 
-namespace Jmarreros\Http;
+namespace Lune\Http;
 
-use Jmarreros\Server\Server;
+use Lune\Server\Server;
 
+/**
+ * HTTP request.
+ */
 class Request {
-	protected string $uri;
-	protected HttpMethods $method;
-	protected array $data;
-	protected array $query;
+    /**
+     * URI requested by the client.
+     *
+     * @var string
+     */
+    protected string $uri;
 
-	public function __construct(Server $server) {
-		$this->uri = $server->requestUri();
-		$this->method = $server->requestMethod();
-		$this->data = $server->postData();
-		$this->query = $server->queryParams();
-	}
+    /**
+     * HTTP method used for this request.
+     *
+     * @var HttpMethod
+     */
+    protected HttpMethod $method;
 
-	public function uri():string{
-		return $this->uri;
-	}
+    /**
+     * POST data.
+     *
+     * @var array
+     */
+    protected array $data;
 
-	public function method():HttpMethods{
-		return $this->method;
-	}
+    /**
+     * Query parameters.
+     *
+     * @var array
+     */
+    protected array $query;
+
+    /**
+     * Create a new request from the given `$server`.
+     *
+     * @param Server $server
+     */
+    public function __construct(Server $server) {
+        $this->uri = $server->requestUri();
+        $this->method = $server->requestMethod();
+        $this->data = $server->postData();
+        $this->query = $server->queryParams();
+    }
+
+    /**
+     * Get the request URI.
+     *
+     * @return string
+     */
+    public function uri(): string {
+        return $this->uri;
+    }
+
+    /**
+     * Get the request HTTP method.
+     *
+     * @return HttpMethod
+     */
+    public function method(): HttpMethod {
+        return $this->method;
+    }
 }

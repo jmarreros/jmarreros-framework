@@ -1,39 +1,57 @@
 <?php
 
-namespace Jmarreros\Server;
+namespace Lune\Server;
 
-use Jmarreros\Http\HttpMethods;
-use Jmarreros\Http\Response;
+use Lune\Http\HttpMethod;
+use Lune\Http\Response;
 
-class PHPNativeServer implements Server {
-	public function requestUri(): string {
-		return parse_url( $_SERVER["REQUEST_URI"], PHP_URL_PATH );
-	}
+/**
+ * PHP native server that uses `$_SERVER` global.
+ */
+class PhpNativeServer implements Server {
+    /**
+     * @inheritDoc
+     */
+    public function requestUri(): string {
+        return parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+    }
 
-	public function requestMethod(): HttpMethods {
-		return HttpMethods::from( $_SERVER["REQUEST_METHOD"] );
-	}
+    /**
+     * @inheritDoc
+     */
+    public function requestMethod(): HttpMethod {
+        return HttpMethod::from($_SERVER["REQUEST_METHOD"]);
+    }
 
-	public function postData(): array {
-		return $_POST;
-	}
+    /**
+     * @inheritDoc
+     */
+    public function postData(): array {
+        return $_POST;
+    }
 
-	public function queryParams(): array {
-		return $_GET;
-	}
+    /**
+     * @inheritDoc
+     */
+    public function queryParams(): array {
+        return $_GET;
+    }
 
+    /**
+     * @inheritDoc
+     */
+    public function sendResponse(Response $response) {
+        // PHP sends Content-Type header by default, but it has to be removed if
+        // the response has not content. Content-Type header can't be removed
+        // unless it is set to some value before.
+        header("Content-Type: None");
+        header_remove("Content-Type");
 
-	public function sendResponse( Response $response ): void {
-		// PHP send content-type by default
-		header("Content-Type: None");
-		header_remove("Content-Type");
-
-		$response->prepare();
-		http_response_code( $response->status() );
-		foreach ( $response->headers() as $header => $value ) {
-			header("$header: $value");
-		}
-
-		print($response->content());
-	}
+        $response->prepare();
+        http_response_code($response->status());
+        foreach ($response->headers() as $header => $value) {
+            header("$header: $value");
+        }
+        print($response->content());
+    }
 }

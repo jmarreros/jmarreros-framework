@@ -1,9 +1,10 @@
 <?php
 
-namespace Jmarreros\Http;
+namespace Lune\Http;
 
-use Exception;
-
-class HttpNotFoundException extends  Exception{
-
+/**
+ * HTTP 404 Not Found.
+ */
+class HttpNotFoundException extends \Exception {
+    //
 }
