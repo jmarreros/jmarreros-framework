@@ -1,9 +1,9 @@
 <?php
 
-namespace Lune\Server;
+namespace Jmarreros\Server;
 
-use Lune\Http\HttpMethod;
-use Lune\Http\Response;
+use Jmarreros\Http\HttpMethod;
+use Jmarreros\Http\Response;
 
 /**
  * PHP native server that uses `$_SERVER` global.

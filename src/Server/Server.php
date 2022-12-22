@@ -1,9 +1,9 @@
 <?php
 
-namespace Lune\Server;
+namespace Jmarreros\Server;
 
-use Lune\Http\HttpMethod;
-use Lune\Http\Response;
+use Jmarreros\Http\HttpMethod;
+use Jmarreros\Http\Response;
 
 /**
  * Similar to PHP `$_SERVER` but having an interface allows us to mock these

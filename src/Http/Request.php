@@ -1,8 +1,8 @@
 <?php
 
-namespace Lune\Http;
+namespace Jmarreros\Http;
 
-use Lune\Server\Server;
+use Jmarreros\Server\Server;
 
 /**
  * HTTP request.
@@ -42,10 +42,10 @@ class Request {
      * @param Server $server
      */
     public function __construct(Server $server) {
-        $this->uri = $server->requestUri();
+        $this->uri    = $server->requestUri();
         $this->method = $server->requestMethod();
-        $this->data = $server->postData();
-        $this->query = $server->queryParams();
+        $this->data   = $server->postData();
+        $this->query  = $server->queryParams();
     }
 
     /**
@@ -64,5 +64,23 @@ class Request {
      */
     public function method(): HttpMethod {
         return $this->method;
+    }
+
+    /**
+     * Get post data
+     *
+     * @return array
+     */
+    public function data(): array {
+        return $this->data;
+    }
+
+    /**
+     *  Get all query parameters
+     *
+     * @return array
+     */
+    public function query(): array {
+        return $this->query;
     }
 }

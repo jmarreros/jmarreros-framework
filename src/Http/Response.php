@@ -1,6 +1,6 @@
 <?php
 
-namespace Lune\Http;
+namespace Jmarreros\Http;
 
 /**
  * HTTP response that will be sent to the client.

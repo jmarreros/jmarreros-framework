@@ -3,3 +3,4 @@
 composer.lock
 /docs/
 phpDocumentor.phar
+.php-cs-fixer.cache

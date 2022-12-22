@@ -1,13 +1,13 @@
 <?php
 
-namespace Lune\Routing;
+namespace Jmarreros\Routing;
 
 /**
  * This class stores the URI regex and action.
  */
 class Route {
     /**
-     * URI defined in the format `"/route/{param}"`. 
+     * URI defined in the format `"/route/{param}"`.
      *
      * @var string
      */

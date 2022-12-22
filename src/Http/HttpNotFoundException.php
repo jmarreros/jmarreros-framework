@@ -1,6 +1,6 @@
 <?php
 
-namespace Lune\Http;
+namespace Jmarreros\Http;
 
 /**
  * HTTP 404 Not Found.
