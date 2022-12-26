@@ -1,12 +1,12 @@
 <?php
 
-namespace Jmarreros\Test\Routing;
+namespace Jmarreros\Test\Routing\Routing;
 
 use Jmarreros\Http\HttpMethod;
 use Jmarreros\Http\Request;
-use PHPUnit\Framework\TestCase;
 use Jmarreros\Routing\Router;
 use Jmarreros\Server\Server;
+use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase {
     private function createMockRequest(string $uri, HttpMethod $method): Request {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Jmarreros\Test\Routing;
+namespace Jmarreros\Test\Routing\Routing;
 
-use PHPUnit\Framework\TestCase;
 use Jmarreros\Routing\Route;
+use PHPUnit\Framework\TestCase;
 
 class RouteTest extends TestCase {
     public function routes_with_not_parameters() {
