@@ -10,8 +10,12 @@ use Jmarreros\Server\PHPNativeServer;
 
 $router = new Router();
 
-$router->get( '/test/{param}', function ( Request $request ) {
-	return Response::json($request->routeParameters());
+$router->get( '/test', function ( Request $request ) {
+	return Response::json( $request->query( "holax" ) );
+} );
+
+$router->get( '/test/{param}/{x}', function ( Request $request ) {
+	return Response::json( $request->routeParameters() );
 //	return Response::json($request->query());
 //	return Response::json( [ "message" => "Get ok 🙂" ] );
 //	return Response::text("Get Ok");
@@ -19,16 +23,16 @@ $router->get( '/test/{param}', function ( Request $request ) {
 
 $router->post( '/test', function ( Request $request ) {
 //	return Response::text("Post Ok");
-	return Response::json($request->data());
+	return Response::json( $request->data() );
 } );
 
 $router->get( '/redirect', function ( Request $request ) {
-	return Response::redirect("/test");
+	return Response::redirect( "/test" );
 } );
 
 
 $router->put( '/test', function ( Request $request ) {
-	return Response::json($request->data());
+	return Response::json( $request->data() );
 } );
 
 $router->patch( '/test', function ( Request $request ) {
@@ -42,9 +46,9 @@ $router->delete( '/test', function ( Request $request ) {
 $server = new PHPNativeServer();
 
 try {
-	$request  = $server->getRequest();
-	$route    = $router->resolve( $request );
-	$request->setRoute($route);
+	$request = $server->getRequest();
+	$route   = $router->resolve( $request );
+	$request->setRoute( $route );
 	$action   = $route->action();
 	$response = $action( $request );
 	$server->sendResponse( $response );
