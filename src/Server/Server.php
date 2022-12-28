@@ -2,7 +2,7 @@
 
 namespace Jmarreros\Server;
 
-use Jmarreros\Http\HttpMethod;
+use Jmarreros\Http\Request;
 use Jmarreros\Http\Response;
 
 /**
@@ -10,34 +10,12 @@ use Jmarreros\Http\Response;
  * global variables, useful for testing.
  */
 interface Server {
-    /**
-     * Get request URI.
-     *
-     * @return string
-     */
-    public function requestUri(): string;
-
-    /**
-     * Get request HTTP method.
-     *
-     * @return HttpMethod
-     */
-    public function requestMethod(): HttpMethod;
-
-    /**
-     * Get request POST data.
-     *
-     * @return array
-     */
-    public function postData(): array;
-
-    /**
-     * Get request query parameters.
-     *
-     * @return array
-     */
-    public function queryParams(): array;
-
+	/**
+	 * Get Request sent by client
+	 *
+	 * @return Request
+	 */
+	public function getRequest():Request;
     /**
      * Send the response to the client.
      *

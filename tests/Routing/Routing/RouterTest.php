@@ -5,16 +5,13 @@ namespace Jmarreros\Test\Routing\Routing;
 use Jmarreros\Http\HttpMethod;
 use Jmarreros\Http\Request;
 use Jmarreros\Routing\Router;
-use Jmarreros\Server\Server;
 use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase {
     private function createMockRequest(string $uri, HttpMethod $method): Request {
-        $mock = $this->getMockBuilder(Server::class)->getMock();
-        $mock->method('requestUri')->willReturn($uri);
-        $mock->method('requestMethod')->willReturn($method);
-
-        return new Request($mock);
+        return (new Request())
+	        ->setUri($uri)
+	        ->setMethod($method);
     }
 
     public function test_resolve_basic_route_with_callback_action() {

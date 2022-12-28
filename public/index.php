@@ -10,13 +10,16 @@ use Jmarreros\Server\PHPNativeServer;
 
 $router = new Router();
 
-$router->get( '/test', function ( Request $request ) {
+$router->get( '/test/{param}', function ( Request $request ) {
+	return Response::json($request->routeParameters());
+//	return Response::json($request->query());
 //	return Response::json( [ "message" => "Get ok 🙂" ] );
-	return Response::text("Get Ok");
+//	return Response::text("Get Ok");
 } );
 
 $router->post( '/test', function ( Request $request ) {
-	return Response::text("Post Ok");
+//	return Response::text("Post Ok");
+	return Response::json($request->data());
 } );
 
 $router->get( '/redirect', function ( Request $request ) {
@@ -25,7 +28,7 @@ $router->get( '/redirect', function ( Request $request ) {
 
 
 $router->put( '/test', function ( Request $request ) {
-	return "PUT OK 🤚";
+	return Response::json($request->data());
 } );
 
 $router->patch( '/test', function ( Request $request ) {
@@ -39,8 +42,9 @@ $router->delete( '/test', function ( Request $request ) {
 $server = new PHPNativeServer();
 
 try {
-	$request  = new Request( $server );
+	$request  = $server->getRequest();
 	$route    = $router->resolve( $request );
+	$request->setRoute($route);
 	$action   = $route->action();
 	$response = $action( $request );
 	$server->sendResponse( $response );

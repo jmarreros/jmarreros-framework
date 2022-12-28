@@ -11,13 +11,17 @@ use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase {
     private function createMockRequest(string $uri, HttpMethod $method, array $query, array $data): Request {
-        $mock = $this->getMockBuilder(Server::class)->getMock();
-        $mock->method('requestUri')->willReturn($uri);
-        $mock->method('requestMethod')->willReturn($method);
-        $mock->method('queryParams')->willReturn($query);
-        $mock->method('postData')->willReturn($data);
+//        $mock = $this->getMockBuilder(Server::class)->getMock();
+//        $mock->method('requestUri')->willReturn($uri);
+//        $mock->method('requestMethod')->willReturn($method);
+//        $mock->method('queryParams')->willReturn($query);
+//        $mock->method('postData')->willReturn($data);
 
-        return new Request($mock);
+        return (new Request)
+	            ->setUri($uri)
+	            ->setMethod($method)
+	            ->setQueryParametes($query)
+	            ->setPostData($data);
     }
 
     public function test_request_returns_data_obtained_from_server_correctly() {
