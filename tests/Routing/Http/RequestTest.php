@@ -39,6 +39,7 @@ class RequestTest extends TestCase {
 	public function test_data_returns_value_if_key_is_given() {
 		$uri     = '/test';
 		$data    = [ 'name' => 'Jhon', 'Apellido' => 'Marreros' ];
+		$query = [ 's' => 'woocommerce' ];
 		$request = $this->createMockRequest( $uri, HttpMethod::POST, $query, $data );
 
 		$this->assertEquals( [ 'name' => 'Jhon' ], $request->data( 'name' ) );
