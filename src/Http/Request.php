@@ -41,6 +41,13 @@ class Request {
 	 */
 	protected array $query;
 
+	/**
+	 * Headers data
+	 *
+	 * @var array
+	 */
+	protected array $headers = [];
+
 
 	/**
 	 * Get the request URI.
@@ -110,9 +117,41 @@ class Request {
 	}
 
 	/**
+	 * Get headers or specific header
+	 *
+	 * @param string|null $key
+	 *
+	 * @return array|string|null
+	 */
+	public function headers( string $key = null ): array|string|null {
+		if ( is_null( $key ) ) {
+			return $this->data;
+		}
+
+		return $this->data[ strtolower( $key ) ] ?? null;
+	}
+
+	/**
+	 * Set headers as array
+	 *
+	 * @param array $headers
+	 *
+	 * @return $this
+	 */
+	public function setHeaders( array $headers ): self {
+		foreach ( $headers as $header => $value ) {
+			$this->headers[ strtolower( $header ) ] = $value;
+		}
+
+		return $this;
+	}
+
+
+	/**
 	 * Get post data
 	 *
 	 * @param string|null $key
+	 *
 	 * @return array
 	 */
 	public function data( ?string $key = null ): array {

@@ -68,7 +68,7 @@ class RequestTest extends TestCase {
 
 		$uri     = '/test/paramres/xres';
 		$request = $this->createMockRequest( $uri, HttpMethod::GET, [], [] );
-		$route   = $router->resolve( $request );
+		$route   = $router->resolveRoute( $request );
 		$request->setRoute( $route );
 
 		$this->assertEquals( [ 'param' => 'paramres' ], $request->routeParameters( 'param' ) );

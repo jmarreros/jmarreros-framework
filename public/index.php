@@ -2,8 +2,10 @@
 require_once "../vendor/autoload.php";
 
 use Jmarreros\App;
+use Jmarreros\Http\Middleware;
 use Jmarreros\Http\Request;
 use Jmarreros\Http\Response;
+use Jmarreros\Routing\Route;
 
 //$router = new Router();
 $app = App::bootstrap();
@@ -40,6 +42,19 @@ $app->router->patch( '/test', function ( Request $request ) {
 $app->router->delete( '/test', function ( Request $request ) {
 	return "DELETE OK 🤚";
 } );
+
+class AuthMiddleware implements Middleware {
+	public function handle( Request $request, \Closure $next ): Response {
+		if ( $request->headers( 'Authorization' ) != 'test' ) {
+			return Response::json(["message" => "Not authenticated"])->setStatus(401);
+		}
+		return $next();
+	}
+}
+
+Route::get( '/middlewares', fn( Request $request ) => Response::json( [ "message" => "OK" ] ) )
+     ->setMiddleware( [ AuthMiddleware::class ] );
+
 
 $app->run();
 
