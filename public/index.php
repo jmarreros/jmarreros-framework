@@ -46,15 +46,18 @@ $app->router->delete( '/test', function ( Request $request ) {
 class AuthMiddleware implements Middleware {
 	public function handle( Request $request, \Closure $next ): Response {
 		if ( $request->headers( 'Authorization' ) != 'test' ) {
-			return Response::json(["message" => "Not authenticated"])->setStatus(401);
+			return Response::json( [ "message" => "Not authenticated" ] )->setStatus( 401 );
 		}
-		return $next();
+
+		$response = $next( $request );
+		$response->setHeader( 'X-Test-Custom-Header', 'Hola 🙂' );
+
+		return $response;
 	}
 }
 
 Route::get( '/middlewares', fn( Request $request ) => Response::json( [ "message" => "OK" ] ) )
      ->setMiddleware( [ AuthMiddleware::class ] );
-
 
 $app->run();
 
