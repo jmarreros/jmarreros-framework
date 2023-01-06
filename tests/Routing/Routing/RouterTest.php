@@ -2,8 +2,10 @@
 
 namespace Jmarreros\Test\Routing\Routing;
 
+use Closure;
 use Jmarreros\Http\HttpMethod;
 use Jmarreros\Http\Request;
+use Jmarreros\Http\Response;
 use Jmarreros\Routing\Router;
 use PHPUnit\Framework\TestCase;
 
@@ -74,6 +76,38 @@ class RouterTest extends TestCase {
             $this->assertEquals($uri, $route->uri());
         }
     }
+
+
+	public function test_run_middlewares(){
+		$middleware1 = new class{
+			public function handle(Request $request, Closure $next): Response{
+				$response = $next($request);
+				$response->setHeader('x-test-one', 'test one');
+				return $response;
+			}
+		};
+
+		$middleware2 = new class{
+			public function handle(Request $request, Closure $next): Response{
+				$response = $next($request);
+				$response->setHeader('x-test-two', 'test two');
+				return $response;
+			}
+		};
+
+		$router = new Router();
+		$expectedResponse = Response::text("test");
+		$uri = '/test';
+
+		$router->get($uri, fn($request) => $expectedResponse)
+			->setMiddleware([$middleware1, $middleware2]);
+
+		$response = $router->resolve($this->createMockRequest($uri, HttpMethod::GET));
+
+		$this->assertEquals($expectedResponse, $response);
+		$this->assertEquals( 'test one', $response->headers('x-test-one') );
+		$this->assertEquals( 'test two', $response->headers('x-test-two') );
+	}
 }
 
 
