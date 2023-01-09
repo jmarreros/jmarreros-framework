@@ -59,10 +59,10 @@ class AuthMiddleware implements Middleware {
 Route::get( '/middlewares', fn( Request $request ) => Response::json( [ "message" => "OK" ] ) )
      ->setMiddleware( [ AuthMiddleware::class ] );
 
+// Views
+Route::get('/html', fn(Request $request) => Response::view('home'));
+
 $app->run();
-
-
-
 
 //	print( "Not Found 🤔" );
 //	http_response_code( 404 );

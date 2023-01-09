@@ -9,17 +9,21 @@ use Jmarreros\Http\Response;
 use Jmarreros\Routing\Router;
 use Jmarreros\Server\PhpNativeServer;
 use Jmarreros\Server\Server;
+use Jmarreros\View\JmarrerosEngine;
+use Jmarreros\View\View;
 
 class App {
 	public Router $router;
 	public Request $request;
 	public Server $server;
+	public View $view;
 
 	public static function bootstrap() {
 		$app = Container::singleton(self::class);
 		$app->router  = new Router;
 		$app->server  = new PhpNativeServer();
 		$app->request = $app->server->getRequest();
+		$app->view = new JmarrerosEngine(__DIR__."/../views");
 
 		return $app;
 	}
