@@ -180,8 +180,8 @@ class Response {
 			->setHeader( "Location", $uri );
 	}
 
-	public static function view(string $view): Response{
-		$content = Container::resolve(App::class)->view->render($view);
+	public static function view(string $view, array $params = [], string $layout = null): Response{
+		$content = Container::resolve(App::class)->view->render($view, $params, $layout);
 
 		return (new self)
 				->setContentType('text/html')

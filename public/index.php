@@ -60,7 +60,9 @@ Route::get( '/middlewares', fn( Request $request ) => Response::json( [ "message
      ->setMiddleware( [ AuthMiddleware::class ] );
 
 // Views
-Route::get('/html', fn(Request $request) => Response::view('home'));
+Route::get('/html', fn(Request $request) => Response::view('home', [
+	'user' => 'Manolo'
+]));
 
 $app->run();
 
