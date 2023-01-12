@@ -2,7 +2,6 @@
 
 namespace Jmarreros;
 
-use Jmarreros\Container\Container;
 use Jmarreros\Http\HttpNotFoundException;
 use Jmarreros\Http\Request;
 use Jmarreros\Http\Response;
@@ -19,7 +18,7 @@ class App {
 	public View $view;
 
 	public static function bootstrap() {
-		$app = Container::singleton(self::class);
+		$app = singleton(self::class);
 		$app->router  = new Router;
 		$app->server  = new PhpNativeServer();
 		$app->request = $app->server->getRequest();

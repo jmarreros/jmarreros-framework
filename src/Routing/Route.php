@@ -138,6 +138,6 @@ class Route {
 	 * @return Route
 	 */
 	public static function get( string $uri, Closure $action ): Route {
-		return Container::resolve( App::class )->router->get( $uri, $action );
+		return app()->router->get( $uri, $action );
 	}
 }

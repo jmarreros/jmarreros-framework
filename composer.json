@@ -10,7 +10,11 @@
     "autoload": {
         "psr-4": {
             "Jmarreros\\": "src/"
-        }
+        },
+        "files": [
+            "src/Helpers/app.php",
+            "src/Helpers/http.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
