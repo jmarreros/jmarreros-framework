@@ -3,7 +3,10 @@
 namespace Jmarreros\Test\Validation;
 
 use Jmarreros\Validation\Rules\Email;
+use Jmarreros\Validation\Rules\LessThan;
+use Jmarreros\Validation\Rules\Number;
 use Jmarreros\Validation\Rules\Required;
+use Jmarreros\Validation\Rules\RequiredWhen;
 use Jmarreros\Validation\Rules\RequiredWith;
 use PHPUnit\Framework\TestCase;
 
@@ -65,7 +68,48 @@ class ValidationRulesTest extends TestCase {
 		$this->assertFalse($rule->isValid( 'test', $data ) );
 	}
 
-	//TODO:
-	// RequiredWhen('other', '>', 5)
-	//
+	public function data_numbers(): array {
+		return [
+			["22", true],
+			["da", false],
+			["23ss", false],
+			["-33", true],
+			["-3dd", false],
+		];
+	}
+
+	/**
+	 * @dataProvider data_numbers
+	 */
+	public function test_is_numeric($value, $expected){
+		$data = ['number' => $value];
+		$number = new Number();
+		$this->assertEquals($expected, $number->isValid('number', $data));
+	}
+
+
+	public function test_is_less_than(){
+		$data = ['number' => 4];
+		$number = new LessThan(10);
+
+		$this->assertEquals(true, $number->isValid('number', $data));
+	}
+
+
+	public function test_is_required_when(){
+		$rule = new RequiredWhen('other', '>');
+		$data = ['other' => 50, 'test' => 5];
+
+		$this->assertTrue($rule->isValid( 'test', $data ) );
+
+		$rule = new RequiredWhen('other', '=');
+		$data = ['other' => 10, 'test' => 10];
+
+		$this->assertTrue($rule->isValid( 'test', $data ) );
+
+		$rule = new RequiredWhen('other', '<');
+		$data = ['other' => 10, 'test' => 100];
+
+		$this->assertTrue($rule->isValid( 'test', $data ) );
+	}
 }

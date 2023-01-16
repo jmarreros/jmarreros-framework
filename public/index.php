@@ -6,6 +6,8 @@ use Jmarreros\Http\Middleware;
 use Jmarreros\Http\Request;
 use Jmarreros\Http\Response;
 use Jmarreros\Routing\Route;
+use Jmarreros\Validation\Rule;
+use Jmarreros\Validation\Rules\Required;
 
 //$router = new Router();
 $app = App::bootstrap();
@@ -63,6 +65,17 @@ Route::get( '/middlewares', fn( Request $request ) => json( [ "message" => "OK" 
 Route::get('/html', fn(Request $request) => view('home', [
 	'user' => 'Manolo'
 ]));
+
+Route::post('/validate', fn(Request $request) => json($request->validate([
+	'test' => Rule::required(),
+	'num' => Rule::number(),
+	'email' => [Rule::required(), Rule::email()]
+],
+[
+	'email' => [
+		Required::class => 'El correo es requerido, dámelo'
+	]
+])));
 
 $app->run();
 

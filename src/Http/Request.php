@@ -3,6 +3,7 @@
 namespace Jmarreros\Http;
 
 use Jmarreros\Routing\Route;
+use Jmarreros\Validation\Validator;
 
 /**
  * HTTP request.
@@ -221,5 +222,11 @@ class Request {
 		}
 
 		return $params;
+	}
+
+	public function validate( array $rules, array $messages = [] ): array {
+		$validator = new Validator($this->data);
+
+		return $validator->validate($rules, $messages);
 	}
 }
