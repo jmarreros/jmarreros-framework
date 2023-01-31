@@ -9,6 +9,7 @@ use Jmarreros\Routing\Router;
 use Jmarreros\Server\PhpNativeServer;
 use Jmarreros\Server\Server;
 use Jmarreros\Validation\Exceptions\ValidationException;
+use Jmarreros\Validation\Rule;
 use Jmarreros\View\JmarrerosEngine;
 use Jmarreros\View\View;
 
@@ -24,7 +25,7 @@ class App {
 		$app->server  = new PhpNativeServer();
 		$app->request = $app->server->getRequest();
 		$app->view    = new JmarrerosEngine( __DIR__ . "/../views" );
-
+		Rule::LoadDefaultRules();
 		return $app;
 	}
 
@@ -38,10 +39,11 @@ class App {
 			$this->abort( json( $e->errors() )->setStatus( 422 ) );
 		} catch ( \Throwable $e ) {
 			$response = json( [
+				'error' => $e::class,
 				'message' => $e->getMessage(),
 				'trace'   => $e->getTrace()
 			] );
-			$this->abort( $response );
+			$this->abort( $response->setStatus(500) );
 		}
 	}
 

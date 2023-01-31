@@ -67,13 +67,13 @@ Route::get('/html', fn(Request $request) => view('home', [
 ]));
 
 Route::post('/validate', fn(Request $request) => json($request->validate([
-	'test' => Rule::required(),
-	'num' => Rule::number(),
-	'email' => ['required', 'email3']
+	'test' => 'required',
+	'num' => 'number',
+	'email' => ['required','email']
 ],
 [
 	'email' => [
-		Required::class => 'El correo es requerido, dámelo'
+		'required' => 'El correo es requerido, dámelo'
 	]
 ])));
 

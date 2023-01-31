@@ -2,6 +2,8 @@
 
 namespace Jmarreros\Validation\Rules;
 
+use Jmarreros\Validation\Exceptions\RulesParseException;
+
 class RequiredWhen implements ValidationRule {
 	protected string $withField;
 	protected string $symbol;
@@ -23,6 +25,7 @@ class RequiredWhen implements ValidationRule {
 				"=" => $number == $data[$this->withField],
 				">" => $number < $data[$this->withField],
 				"<" => $number > $data[$this->withField],
+				default => throw new RulesParseException('Unknow required_when operator')
 			};
 
 		}
