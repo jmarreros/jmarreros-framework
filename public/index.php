@@ -62,20 +62,30 @@ Route::get( '/middlewares', fn( Request $request ) => json( [ "message" => "OK" 
      ->setMiddleware( [ AuthMiddleware::class ] );
 
 // Views
-Route::get('/html', fn(Request $request) => view('home', [
+Route::get( '/html', fn( Request $request ) => view( 'home', [
 	'user' => 'Manolo'
-]));
+] ) );
 
-Route::post('/validate', fn(Request $request) => json($request->validate([
-	'test' => 'required',
-	'num' => 'number',
-	'email' => ['required','email']
+Route::post( '/validate', fn( Request $request ) => json( $request->validate( [
+	'test'  => 'required',
+	'num'   => 'number',
+	'email' => [ 'required', 'email' ]
 ],
-[
-	'email' => [
-		'required' => 'El correo es requerido, dámelo'
-	]
-])));
+	[
+		'email' => [
+			'required' => 'El correo es requerido, dámelo'
+		]
+	] ) ) );
+
+Route::get( '/session', function ( Request $request ) {
+//	app()->session->set( 'test', 'Hola 🙂!' );
+//	app()->session->remove( 'test' );
+
+	return json( [
+		'id'   => session()->id(),
+		'test' => session()->get( 'test', 'by default!' )
+	] );
+} );
 
 $app->run();
 

@@ -8,6 +8,8 @@ use Jmarreros\Http\Response;
 use Jmarreros\Routing\Router;
 use Jmarreros\Server\PhpNativeServer;
 use Jmarreros\Server\Server;
+use Jmarreros\Session\PhpNativeSessionStorage;
+use Jmarreros\Session\Session;
 use Jmarreros\Validation\Exceptions\ValidationException;
 use Jmarreros\Validation\Rule;
 use Jmarreros\View\JmarrerosEngine;
@@ -18,6 +20,7 @@ class App {
 	public Request $request;
 	public Server $server;
 	public View $view;
+	public Session $session;
 
 	public static function bootstrap() {
 		$app          = singleton( self::class );
@@ -25,7 +28,9 @@ class App {
 		$app->server  = new PhpNativeServer();
 		$app->request = $app->server->getRequest();
 		$app->view    = new JmarrerosEngine( __DIR__ . "/../views" );
+		$app->session = new Session( new PhpNativeSessionStorage );
 		Rule::LoadDefaultRules();
+
 		return $app;
 	}
 
@@ -39,11 +44,11 @@ class App {
 			$this->abort( json( $e->errors() )->setStatus( 422 ) );
 		} catch ( \Throwable $e ) {
 			$response = json( [
-				'error' => $e::class,
+				'error'   => $e::class,
 				'message' => $e->getMessage(),
 				'trace'   => $e->getTrace()
 			] );
-			$this->abort( $response->setStatus(500) );
+			$this->abort( $response->setStatus( 500 ) );
 		}
 	}
 
