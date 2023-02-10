@@ -13,6 +13,10 @@ class PhpNativeSessionStorage implements SessionStorage {
 		}
 	}
 
+	public function save() {
+		session_write_close();
+	}
+
 	public function id(): string {
 		return session_id();
 	}
@@ -25,7 +29,7 @@ class PhpNativeSessionStorage implements SessionStorage {
 		$_SESSION[ $key ] = $value;
 	}
 
-	public function has( string $key ): Boolean {
+	public function has( string $key ): bool {
 		return isset( $_SESSION[ $key ] );
 	}
 

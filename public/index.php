@@ -80,11 +80,14 @@ Route::post( '/validate', fn( Request $request ) => json( $request->validate( [
 Route::get( '/session', function ( Request $request ) {
 //	app()->session->set( 'test', 'Hola 🙂!' );
 //	app()->session->remove( 'test' );
+//	return json( [
+//		'id'   => session()->id(),
+//		'test' => session()->get( 'test', 'by default!' )
+//	] );
 
-	return json( [
-		'id'   => session()->id(),
-		'test' => session()->get( 'test', 'by default!' )
-	] );
+//	session()->flash( 'test', 'success' );
+
+	return json( $_SESSION );
 } );
 
 $app->run();
