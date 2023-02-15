@@ -180,11 +180,19 @@ class Response {
 			->setHeader( "Location", $uri );
 	}
 
-	public static function view(string $view, array $params = [], string $layout = null): Response{
-		$content = app()->view->render($view, $params, $layout);
+	public static function view( string $view, array $params = [], string $layout = null ): Response {
+		$content = app()->view->render( $view, $params, $layout );
 
-		return (new self)
-				->setContentType('text/html')
-				->setContent($content);
+		return ( new self )
+			->setContentType( 'text/html' )
+			->setContent( $content );
+	}
+
+	public function withErrors( array $errors, int $status = 400 ) {
+		$this->setStatus( $status );
+		session()->flash( '_errors', $errors );
+		session()->flash( '_old', request()->data() );
+
+		return $this;
 	}
 }

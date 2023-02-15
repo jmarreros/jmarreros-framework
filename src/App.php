@@ -2,6 +2,7 @@
 
 namespace Jmarreros;
 
+use Jmarreros\Http\HttpMethod;
 use Jmarreros\Http\HttpNotFoundException;
 use Jmarreros\Http\Request;
 use Jmarreros\Http\Response;
@@ -34,14 +35,25 @@ class App {
 		return $app;
 	}
 
+	public function prepareNextRequest() {
+		if ( $this->request->method() == HttpMethod::GET ) {
+			$this->session->set( '_previous', $this->request->uri() );
+		}
+	}
+
+	public function terminate( Response $response ) {
+		$this->prepareNextRequest();
+		$this->server->sendResponse( $response );
+	}
+
 	public function run() {
 		try {
 			$response = $this->router->resolve( $this->request );
-			$this->server->sendResponse( $response );
+			$this->terminate( $response );
 		} catch ( HttpNotFoundException $e ) {
 			$this->abort( Response::text( "Not Found" )->setStatus( 404 ) );
 		} catch ( ValidationException $e ) {
-			$this->abort( json( $e->errors() )->setStatus( 422 ) );
+			$this->abort( back()->withErrors( $e->errors(), 422 ) );
 		} catch ( \Throwable $e ) {
 			$response = json( [
 				'error'   => $e::class,
@@ -53,6 +65,6 @@ class App {
 	}
 
 	public function abort( Response $response ) {
-		$this->server->sendResponse( $response );
+		$this->terminate( $response );
 	}
 }

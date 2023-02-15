@@ -45,6 +45,7 @@ $app->router->delete( '/test', function ( Request $request ) {
 	return "DELETE OK 🤚";
 } );
 
+
 class AuthMiddleware implements Middleware {
 	public function handle( Request $request, \Closure $next ): Response {
 		if ( $request->headers( 'Authorization' ) != 'test' ) {
@@ -88,6 +89,14 @@ Route::get( '/session', function ( Request $request ) {
 //	session()->flash( 'test', 'success' );
 
 	return json( $_SESSION );
+} );
+
+Route::get( '/form', function ( Request $request ) {
+	return view( 'form' );
+} );
+
+Route::post( '/form', function ( Request $request ) {
+	return json( $request->validate(['email' => 'email', 'name' => 'required']) );
 } );
 
 $app->run();
