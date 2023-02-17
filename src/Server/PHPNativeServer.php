@@ -10,19 +10,16 @@ use Jmarreros\Http\Response;
  * PHP native server that uses `$_SERVER` global.
  */
 class PhpNativeServer implements Server {
-
     /**
      * @inheritDoc
      */
     public function getRequest(): Request {
-
-
-		return (new Request())
-			->setUri(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH))
-			->setMethod(HttpMethod::from($_SERVER["REQUEST_METHOD"]))
-			->setHeaders(getallheaders())
-			->setPostData($_POST)
-			->setQueryParametes($_GET);
+        return (new Request())
+            ->setUri(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH))
+            ->setMethod(HttpMethod::from($_SERVER["REQUEST_METHOD"]))
+            ->setHeaders(getallheaders())
+            ->setPostData($_POST)
+            ->setQueryParametes($_GET);
     }
 
     /**

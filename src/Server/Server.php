@@ -10,12 +10,12 @@ use Jmarreros\Http\Response;
  * global variables, useful for testing.
  */
 interface Server {
-	/**
-	 * Get Request sent by client
-	 *
-	 * @return Request
-	 */
-	public function getRequest():Request;
+    /**
+     * Get Request sent by client
+     *
+     * @return Request
+     */
+    public function getRequest(): Request;
     /**
      * Send the response to the client.
      *

@@ -2,6 +2,7 @@
 require_once "../vendor/autoload.php";
 
 use Jmarreros\App;
+use Jmarreros\Database\DB;
 use Jmarreros\Http\Middleware;
 use Jmarreros\Http\Request;
 use Jmarreros\Http\Response;
@@ -98,6 +99,16 @@ Route::get( '/form', function ( Request $request ) {
 Route::post( '/form', function ( Request $request ) {
 	return json( $request->validate(['email' => 'email', 'name' => 'required']) );
 } );
+
+Route::post('/user', function(Request $request){
+//	var_dump($request->data('name'));
+	DB::statement("INSERT INTO users(name, email) VALUES (?, ?)", [$request->data('name'), $request->data('email')]);
+	return json(["message" => "ok", "name" => $request->data('name')]);
+});
+
+Route::get('/users', function(Request $request){
+	return json(DB::statement("SELECT * FROM users"));
+});
 
 $app->run();
 

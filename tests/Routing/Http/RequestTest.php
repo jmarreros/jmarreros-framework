@@ -16,7 +16,7 @@ class RequestTest extends TestCase {
 //        $mock->method('queryParams')->willReturn($query);
 //        $mock->method('postData')->willReturn($data);
 
-		return ( new Request )
+		return ( new Request() )
 			->setUri( $uri )
 			->setMethod( $method )
 			->setQueryParametes( $query )
@@ -39,11 +39,11 @@ class RequestTest extends TestCase {
 	public function test_data_returns_value_if_key_is_given() {
 		$uri     = '/test';
 		$data    = [ 'name' => 'Jhon', 'Apellido' => 'Marreros' ];
-		$query = [ 's' => 'woocommerce' ];
+		$query   = [ 's' => 'woocommerce' ];
 		$request = $this->createMockRequest( $uri, HttpMethod::POST, $query, $data );
 
-		$this->assertEquals( [ 'name' => 'Jhon' ], $request->data( 'name' ) );
-		$this->assertEquals( [ 'namex' => null ], $request->data( 'namex' ) );
+		$this->assertEquals( 'Jhon', $request->data( 'name' ) );
+		$this->assertEquals( null, $request->data( 'namex' ) );
 		$this->assertEquals( $data, $request->data() );
 	}
 

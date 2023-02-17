@@ -1,5 +1,6 @@
 <?php
+
 namespace Jmarreros\Exceptions;
 
-class JmarrerosException extends  \Exception {
+class JmarrerosException extends \Exception {
 }

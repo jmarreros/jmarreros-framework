@@ -6,20 +6,19 @@ use phpDocumentor\Reflection\Types\Boolean;
 use PhpParser\Builder\Interface_;
 
 interface SessionStorage {
+    public function start();
 
-	public function start();
+    public function save();
 
-	public function save();
+    public function id(): string;
 
-	public function id(): string;
+    public function get(string $key, $default = null);
 
-	public function get( string $key, $default = null );
+    public function set(string $key, mixed $value);
 
-	public function set( string $key, mixed $value );
+    public function has(string $key): bool;
 
-	public function has( string $key ): bool;
+    public function remove(string $key);
 
-	public function remove( string $key );
-
-	public function destroy();
+    public function destroy();
 }

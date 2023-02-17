@@ -2,6 +2,8 @@
 
 namespace Jmarreros;
 
+use Jmarreros\Database\Drivers\DatabaseDriver;
+use Jmarreros\Database\Drivers\PdoDriver;
 use Jmarreros\Http\HttpMethod;
 use Jmarreros\Http\HttpNotFoundException;
 use Jmarreros\Http\Request;
@@ -22,14 +24,17 @@ class App {
 	public Server $server;
 	public View $view;
 	public Session $session;
+	public DatabaseDriver $database;
 
 	public static function bootstrap() {
-		$app          = singleton( self::class );
-		$app->router  = new Router;
-		$app->server  = new PhpNativeServer();
-		$app->request = $app->server->getRequest();
-		$app->view    = new JmarrerosEngine( __DIR__ . "/../views" );
-		$app->session = new Session( new PhpNativeSessionStorage );
+		$app           = singleton( self::class );
+		$app->router   = new Router();
+		$app->server   = new PhpNativeServer();
+		$app->request  = $app->server->getRequest();
+		$app->view     = new JmarrerosEngine( __DIR__ . "/../views" );
+		$app->session  = new Session( new PhpNativeSessionStorage() );
+		$app->database = new PdoDriver();
+		$app->database->connect( 'mysql', 'localhost', 3307, 'curso_framework', 'root', '' );
 		Rule::LoadDefaultRules();
 
 		return $app;
@@ -44,6 +49,8 @@ class App {
 	public function terminate( Response $response ) {
 		$this->prepareNextRequest();
 		$this->server->sendResponse( $response );
+		$this->database->close();
+		exit();
 	}
 
 	public function run() {

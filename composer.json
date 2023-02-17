@@ -4,8 +4,7 @@
     "type": "library",
     "license": "MIT",
     "scripts": {
-        "test": "phpunit --color=always --testdox -v tests/",
-        "php-cs-fixer": "php-cs-fixer fix --diff"
+        "test": "phpunit --color=always --testdox -v tests/"
     },
     "autoload": {
         "psr-4": {
@@ -34,5 +33,8 @@
     },
     "config": {
         "disable-tls": false
+    },
+    "require": {
+        "php-kit/ext-pdo": "^1.1"
     }
 }

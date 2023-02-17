@@ -5,31 +5,30 @@ namespace Jmarreros\Validation\Rules;
 use Jmarreros\Validation\Exceptions\RulesParseException;
 
 class RequiredWhen implements ValidationRule {
-	protected string $withField;
-	protected string $symbol;
+    protected string $withField;
+    protected string $symbol;
 
-	public function __construct( string $withField, string $symbol ) {
-		$this->withField = $withField;
-		$this->symbol = $symbol;
-	}
+    public function __construct(string $withField, string $symbol) {
+        $this->withField = $withField;
+        $this->symbol = $symbol;
+    }
 
-	public function message(): string {
-		return "This field should be $this->symbol than $this->withField";
-	}
+    public function message(): string {
+        return "This field should be $this->symbol than $this->withField";
+    }
 
-	public function isValid( string $field, array $data ): bool {
-		if ( isset( $data[ $field ] ) && $data[ $field ] != '' ) {
-			$number = $data[ $field ];
+    public function isValid(string $field, array $data): bool {
+        if (isset($data[ $field ]) && $data[ $field ] != '') {
+            $number = $data[ $field ];
 
-			return match ( $this->symbol ) {
-				"=" => $number == $data[$this->withField],
-				">" => $number < $data[$this->withField],
-				"<" => $number > $data[$this->withField],
-				default => throw new RulesParseException('Unknow required_when operator')
-			};
+            return match ($this->symbol) {
+                "=" => $number == $data[$this->withField],
+                ">" => $number < $data[$this->withField],
+                "<" => $number > $data[$this->withField],
+                default => throw new RulesParseException('Unknow required_when operator')
+            };
+        }
 
-		}
-
-		return true;
-	}
+        return true;
+    }
 }

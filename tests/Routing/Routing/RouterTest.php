@@ -12,9 +12,9 @@ use PHPUnit\Framework\TestCase;
 class RouterTest extends TestCase {
     private function createMockRequest(string $uri, HttpMethod $method, array $headers =[]): Request {
         return (new Request())
-	        ->setUri($uri)
-	        ->setMethod($method)
-			->setHeaders($headers);
+            ->setUri($uri)
+            ->setMethod($method)
+            ->setHeaders($headers);
     }
 
     public function test_resolve_basic_route_with_callback_action() {
@@ -79,66 +79,65 @@ class RouterTest extends TestCase {
     }
 
 
-	public function test_run_middlewares(){
-		$middleware1 = new class{
-			public function handle(Request $request, Closure $next): Response{
-				$response = $next($request);
-				$response->setHeader('x-test-one', 'test one');
-				return $response;
-			}
-		};
+    public function test_run_middlewares() {
+        $middleware1 = new class () {
+            public function handle(Request $request, Closure $next): Response {
+                $response = $next($request);
+                $response->setHeader('x-test-one', 'test one');
+                return $response;
+            }
+        };
 
-		$middleware2 = new class{
-			public function handle(Request $request, Closure $next): Response{
-				$response = $next($request);
-				$response->setHeader('x-test-two', 'test two');
-				return $response;
-			}
-		};
+        $middleware2 = new class () {
+            public function handle(Request $request, Closure $next): Response {
+                $response = $next($request);
+                $response->setHeader('x-test-two', 'test two');
+                return $response;
+            }
+        };
 
-		$router = new Router();
-		$expectedResponse = Response::text("test");
-		$uri = '/test';
+        $router = new Router();
+        $expectedResponse = Response::text("test");
+        $uri = '/test';
 
-		$router->get($uri, fn($request) => $expectedResponse)
-			->setMiddleware([$middleware1, $middleware2]);
+        $router->get($uri, fn ($request) => $expectedResponse)
+            ->setMiddleware([$middleware1, $middleware2]);
 
-		$response = $router->resolve($this->createMockRequest($uri, HttpMethod::GET));
+        $response = $router->resolve($this->createMockRequest($uri, HttpMethod::GET));
 
-		$this->assertEquals($expectedResponse, $response);
-		$this->assertEquals( 'test one', $response->headers('x-test-one') );
-		$this->assertEquals( 'test two', $response->headers('x-test-two') );
-	}
+        $this->assertEquals($expectedResponse, $response);
+        $this->assertEquals('test one', $response->headers('x-test-one'));
+        $this->assertEquals('test two', $response->headers('x-test-two'));
+    }
 
-	public function test_middleware_stack_can_be_stopped(){
-		$middleware1 = new class{
-			public function handle(Request $request, Closure $next): Response{
-				return $next($request);
-			}
-		};
+    public function test_middleware_stack_can_be_stopped() {
+        $middleware1 = new class () {
+            public function handle(Request $request, Closure $next): Response {
+                return $next($request);
+            }
+        };
 
-		$middleware2 = new class{
-			public function handle(Request $request, Closure $next): Response{
-				if ( $request->headers('x-test') === 'abort' ){
-					return Response::text('respuesta desde middleware');
-				}
+        $middleware2 = new class () {
+            public function handle(Request $request, Closure $next): Response {
+                if ($request->headers('x-test') === 'abort') {
+                    return Response::text('respuesta desde middleware');
+                }
 
-				return  $next($request);
-			}
-		};
+                return  $next($request);
+            }
+        };
 
-		$router = new Router();
-		$expectedResponse =  Response::text('respuesta desde middleware');
-		$myResponse = Response::text("devuelve response");
-		$uri = '/test';
+        $router = new Router();
+        $expectedResponse =  Response::text('respuesta desde middleware');
+        $myResponse = Response::text("devuelve response");
+        $uri = '/test';
 
-		$router->get($uri, fn($request) => $myResponse)
-		       ->setMiddleware([$middleware1, $middleware2]);
+        $router->get($uri, fn ($request) => $myResponse)
+               ->setMiddleware([$middleware1, $middleware2]);
 
-		$response = $router->resolve($this->createMockRequest($uri, HttpMethod::GET, ['x-test' =>'abort']));
-		$this->assertEquals($expectedResponse, $response);
-
-	}
+        $response = $router->resolve($this->createMockRequest($uri, HttpMethod::GET, ['x-test' =>'abort']));
+        $this->assertEquals($expectedResponse, $response);
+    }
 }
 
 
