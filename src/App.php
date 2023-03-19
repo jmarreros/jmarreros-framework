@@ -4,6 +4,7 @@ namespace Jmarreros;
 
 use Jmarreros\Database\Drivers\DatabaseDriver;
 use Jmarreros\Database\Drivers\PdoDriver;
+use Jmarreros\Database\Model;
 use Jmarreros\Http\HttpMethod;
 use Jmarreros\Http\HttpNotFoundException;
 use Jmarreros\Http\Request;
@@ -35,6 +36,7 @@ class App {
 		$app->session  = new Session( new PhpNativeSessionStorage() );
 		$app->database = new PdoDriver();
 		$app->database->connect( 'mysql', 'localhost', 3307, 'curso_framework', 'root', '' );
+		Model::setDatabaseDriver($app->database);
 		Rule::LoadDefaultRules();
 
 		return $app;

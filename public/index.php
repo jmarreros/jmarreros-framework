@@ -3,6 +3,7 @@ require_once "../vendor/autoload.php";
 
 use Jmarreros\App;
 use Jmarreros\Database\DB;
+use Jmarreros\Database\Model;
 use Jmarreros\Http\Middleware;
 use Jmarreros\Http\Request;
 use Jmarreros\Http\Response;
@@ -108,6 +109,20 @@ Route::post('/user', function(Request $request){
 
 Route::get('/users', function(Request $request){
 	return json(DB::statement("SELECT * FROM users"));
+});
+
+
+class User extends Model{
+
+}
+
+Route::post('/user/model', function(Request $request){
+	$user = new User();
+	$user->name = $request->data('name');
+	$user->email = $request->data('email');
+	$user->save();
+
+	return json(["message: " => "ok"]);
 });
 
 $app->run();
