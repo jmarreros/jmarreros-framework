@@ -98,32 +98,50 @@ Route::get( '/form', function ( Request $request ) {
 } );
 
 Route::post( '/form', function ( Request $request ) {
-	return json( $request->validate(['email' => 'email', 'name' => 'required']) );
+	return json( $request->validate( [ 'email' => 'email', 'name' => 'required' ] ) );
 } );
 
-Route::post('/user', function(Request $request){
+Route::post( '/user', function ( Request $request ) {
 //	var_dump($request->data('name'));
-	DB::statement("INSERT INTO users(name, email) VALUES (?, ?)", [$request->data('name'), $request->data('email')]);
-	return json(["message" => "ok", "name" => $request->data('name')]);
-});
+	DB::statement( "INSERT INTO users(name, email) VALUES (?, ?)", [
+		$request->data( 'name' ),
+		$request->data( 'email' )
+	] );
 
-Route::get('/users', function(Request $request){
-	return json(DB::statement("SELECT * FROM users"));
-});
+	return json( [ "message" => "ok", "name" => $request->data( 'name' ) ] );
+} );
+
+Route::get( '/users', function ( Request $request ) {
+	return json( DB::statement( "SELECT * FROM users" ) );
+} );
 
 
-class User extends Model{
-
+class User extends Model {
+	protected array $fillable = [ 'name', 'email' ];
 }
 
-Route::post('/user/model', function(Request $request){
-	$user = new User();
-	$user->name = $request->data('name');
-	$user->email = $request->data('email');
-	$user->save();
+Route::post( '/user/model', function ( Request $request ) {
+//	$user = new User();
+//	$user->name = $request->data('name');
+//	$user->email = $request->data('email');
+//	$user->save();
 
-	return json(["message: " => "ok"]);
-});
+//	User::create([
+//		'name' => 'Jhon',
+//		'email' => 'jhon@prueba.com'
+//	]);
+
+	$user = User::create( $request->data() )->toArray();
+
+	return json( $user );
+} );
+
+Route::get( '/user/query', function ( Request $request ) {
+//	return json(User::first()->toArray());
+//	return json(User::find(2)->toArray());
+//	return json( array_map( fn( $m ) => $m->toArray(), User::all() ) );
+	return json( array_map( fn( $m ) => $m->toArray(), User::where('name', 'jhon2') ) );
+} );
 
 $app->run();
 
