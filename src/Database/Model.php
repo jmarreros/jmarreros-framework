@@ -11,6 +11,7 @@ abstract class Model {
 	protected array $hidden = [];
 	protected array $fillable = [];
 	protected array $attributes = [];
+	protected bool $insertTimeStamps = false;
 	private static ?DatabaseDriver $driver = null;
 
 	public static function setDatabaseDriver( DatabaseDriver $driver ) {
@@ -33,6 +34,12 @@ abstract class Model {
 	}
 
 	public function save(): static {
+
+		if ( $this->insertTimeStamps ) {
+			$this->attributes['created_at'] = date( 'Y-m-d H:i:s' );
+			$this->attributes['updated_at'] = date( 'Y-m-d H:i:s' );
+		}
+
 		$databaseColumns = implode( ',', array_keys( $this->attributes ) );
 		$bind            = implode( ',', array_fill( 0, count( $this->attributes ), '?' ) );
 		self::$driver->statement(
