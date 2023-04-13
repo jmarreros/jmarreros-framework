@@ -2,14 +2,18 @@
 
 namespace Jmarreros\Database\Migrations;
 
+use Jmarreros\Database\Drivers\DatabaseDriver;
+
 class Migrator {
 
 	public function __construct(
 		private string $migrationDirectory,
-		private string $templateDirectory
+		private string $templateDirectory,
+		private DatabaseDriver $driver
 	) {
 		$this->migrationDirectory = $migrationDirectory;
 		$this->templateDirectory  = $templateDirectory;
+		$this->driver             = $driver;
 	}
 
 	public function make( string $migrationName ) {
@@ -35,6 +39,34 @@ class Migrator {
 		file_put_contents( $this->migrationDirectory . "/$filename", $template );
 
 		return $filename;
+	}
+
+	private function log( string $message ) {
+		print( $message . PHP_EOL );
+	}
+
+	private function createMigrationsTableIfNotExists() {
+		$this->driver->statement( "CREATE TABLE IF NOT EXISTS migrations (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, PRIMARY KEY (id))" );
+	}
+
+	public function migrate() {
+		$this->createMigrationsTableIfNotExists();
+		$migrated   = $this->driver->statement( "SELECT * FROM migrations" );
+		$migrations = glob( "$this->migrationDirectory/*.php" );
+
+		if ( count( $migrated ) >= count($migrations) ) {
+			$this->log( "No migrations to run" );
+			return;
+		}
+
+		foreach ( array_slice( $migrations, count( $migrated ) ) as $file ) {
+			$migration = require_once( $file );
+			$migration->up();
+			$name = basename( $file );
+			$this->driver->statement( "INSERT INTO migrations (name) VALUES (?)", [ $name ] );
+			$this->log( "Migrated: $name" );
+		}
+
 	}
 
 }
